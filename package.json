@@ -1,0 +1,31 @@
+{
+  "name": "crud-tasks-cristaldo-facundo",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon --watch app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Facuccr/crud-tasks-cristaldo-facundo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/Facuccr/crud-tasks-cristaldo-facundo/issues"
+  },
+  "homepage": "https://github.com/Facuccr/crud-tasks-cristaldo-facundo#readme",
+  "description": "",
+  "dependencies": {
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "mysql2": "^3.14.3",
+    "sequelize": "^6.37.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
