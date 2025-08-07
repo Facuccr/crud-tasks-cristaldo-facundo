@@ -1,9 +1,8 @@
-import { title } from "process";
 import User from "../models/user.model.js";
 
 export const getAllUser = async (req, res) => {
   try {
-    const users = await user.findAll();
+    const users = await User.findAll();
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({
@@ -52,5 +51,36 @@ export const createUser = async (req, res) => {
     res
       .status(500)
       .json({ message: "error al crear el personaje", error: error.message });
+  }
+};
+
+export const updateUser = async (req, res) => {
+  const { id } = req.params;
+  const user = User.findByPk(id);
+  if (!user) {
+    return res.status(404).json({ message: "el personaje no existe" });
+  }
+  const { name, email, password } = req.body;
+  if (!name || !email || !password) {
+    return "";
+  }
+  try {
+  } catch (error) {}
+};
+
+export const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = User.findByPk(id);
+    if (!id) {
+      return res
+        .status(400)
+        .json({ message: "El personaje a borrar no existe" });
+    }
+    await user.destroy();
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error al borrar el personaje", error: error.message });
   }
 };
