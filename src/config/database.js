@@ -15,7 +15,7 @@ const sequelize = new Sequelize(
 export const initDB = async () => {
   try {
     await sequelize.authenticate();
-    console.log("Conexion exitosa con l BD");
+    console.log("Conexion exitosa con la BD");
     await sequelize.sync();
   } catch (error) {
     console.log("error al conectar con la BD", error);
