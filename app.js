@@ -13,16 +13,14 @@ const PORT = process.env.PORT || 4000;
 
 app.use(express.json());
 
-app.get("api/tasks/user_id", async (req, res) => {
+app.get("/api/tasks/:id", async (req, res) => {
   try {
-  } catch (error) {}
-});
+    const { id } = req.params;
 
-app.get("/api/tasks", async (req, res) => {
-  try {
-    const tasks = await task_model.findAll({
+    const task = await task_model.findOne({
+      where: { id: id },
       attributes: {
-        exclude: ["user_id", "isComplete"],
+        exclude: ["user_id"],
       },
       include: [
         {
@@ -33,14 +31,41 @@ app.get("/api/tasks", async (req, res) => {
       ],
     });
 
-    return res.json(tasks);
+    if (!task) {
+      return res.status(404).json({ message: "tarea no encontrada." });
+    }
+
+    return res.json(task);
   } catch (error) {
     return res.status(500).json({
-      message: "Error al obtener las tareas.",
-      error,
+      message: "error al obtener la tarea.",
+      error: error.message,
     });
   }
 });
+
+app.get("/api/users", async (req, res) => {
+  try {
+    const users = await user_model.findAll({
+      attributes: {
+        exclude: ["password"],
+      },
+      include: [
+        {
+          model: task_model,
+          as: "task",
+          attributes: ["id", "title", "description", "isComplete"],
+        },
+      ],
+    });
+    return res.json(users);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "error al obtener los usuarios", error: error.message });
+  }
+});
+
 app.use("/api/users", userRouter);
 app.use("/api/tasks", taskRouter);
 
