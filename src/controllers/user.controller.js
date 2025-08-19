@@ -1,8 +1,8 @@
-import User from "../models/user.model.js";
+import { user_model } from "../models/user.model.js";
 
 export const getAllUser = async (req, res) => {
   try {
-    const users = await User.findAll();
+    const users = await user_model.findAll();
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({
@@ -15,11 +15,11 @@ export const getAllUser = async (req, res) => {
 export const getUserById = async (req, res) => {
   try {
     const { id } = req.params;
-    const user = await User.findByPk(id);
-    if (!user) {
+    const userId = await user_model.findByPk(id);
+    if (!userId) {
       return res.status(404).json({ message: "el usuario no fue encontrado" });
     }
-    res.status(200).json(user);
+    res.status(200).json(userId);
   } catch (error) {
     res
       .status(500)
@@ -35,13 +35,15 @@ export const createUser = async (req, res) => {
       .json({ message: "los campos no deben estar vacios" });
   }
   try {
-    const verificarEmail = await User.findOne({ where: { email: email } });
+    const verificarEmail = await user_model.findOne({
+      where: { email: email },
+    });
     if (verificarEmail) {
       return res
         .status(400)
         .json({ message: "ya existe un usuario con este email" });
     }
-    const newUser = await User.create({
+    const newUser = await user_model.create({
       name,
       email,
       password,
@@ -56,7 +58,7 @@ export const createUser = async (req, res) => {
 
 export const updateUser = async (req, res) => {
   const { id } = req.params;
-  const user = await User.findByPk(id);
+  const user = await user_model.findByPk(id);
 
   try {
     if (!user) {
@@ -104,7 +106,7 @@ export const updateUser = async (req, res) => {
 export const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const user = await User.findByPk(id);
+    const user = await user_model.findByPk(id);
     if (!user) {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }

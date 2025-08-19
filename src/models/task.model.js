@@ -17,4 +17,4 @@ export const task_model = sequelize.define(
 task_model.belongsTo(user_model, { foreignKey: "user_id", as: "responsible" });
 
 // un usuario tiene muchas tareas
-user_model.hasMany(task_model, { foreignKey: "user_id" });
+user_model.hasMany(task_model, { foreignKey: "user_id", as: "task" });
