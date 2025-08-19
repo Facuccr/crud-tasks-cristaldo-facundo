@@ -1,4 +1,3 @@
-// routes/user_role.routes.js
 import { Router } from "express";
 import {
   getAllUserRoles,
