@@ -21,6 +21,8 @@ export const getAllUserRoles = async (req, res) => {
     const roles = await UserRole.findAll();
     res.json(roles);
   } catch (error) {
-    res.status(500).json({ message: "error papu", error: error.message });
+    res
+      .status(500)
+      .json({ message: "error al obtener los usuarios", error: error.message });
   }
 };
