@@ -13,6 +13,16 @@ export const UserProfileModel = sequelize.define(
   }
 );
 
+//si se elimina un usuario, su relacion con el perfil tambien---------------
+
 //relacion 1 a 1
-user_model.hasOne(UserProfileModel, { foreignKey: "user_id", as: "profile" });
-UserProfileModel.belongsTo(user_model, { foreignKey: "user_id", as: "user" });
+user_model.hasOne(UserProfileModel, {
+  foreignKey: "user_id",
+  as: "profile",
+  onDelete: "CASCADE",
+});
+UserProfileModel.belongsTo(user_model, {
+  foreignKey: "user_id",
+  as: "user",
+  onDelete: "CASCADE",
+});
