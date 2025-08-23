@@ -9,17 +9,15 @@ export const task_model = sequelize.define(
     isComplete: { type: DataTypes.BOOLEAN, defaultValue: false },
   },
   {
-    timestamps: false,
+    timestamps: true,
+    paranoid: true,
   }
 );
-
-//si se elimina un usuario tmb su tarea------
 
 //una tarea pertenece a un unico usuario
 task_model.belongsTo(user_model, {
   foreignKey: "user_id",
   as: "responsible",
-  onDelete: "CASCADE",
 });
 
 // un usuario tiene muchas tareas
