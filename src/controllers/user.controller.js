@@ -1,20 +1,11 @@
 import { user_model } from "../models/user.model.js";
 import { task_model } from "../models/task.model.js";
-import { role_model } from "../models/role.model.js";
 
 export const getAllUser = async (req, res) => {
   try {
     const users = await user_model.findAll({
       attributes: { exclude: ["password"] },
-      include: [
-        { model: task_model, as: "task" },
-        {
-          model: role_model,
-          as: "roles",
-          attributes: ["name"],
-          through: { attributes: [] },
-        },
-      ],
+      include: [{ model: task_model, as: "task" }],
     });
     res.status(200).json(users);
   } catch (error) {
@@ -30,15 +21,7 @@ export const getUserById = async (req, res) => {
     const { id } = req.params;
     const userId = await user_model.findByPk(id, {
       attributes: { exclude: ["password"] },
-      include: [
-        { model: task_model, as: "task" },
-        {
-          model: role_model,
-          as: "roles",
-          attributes: ["name"],
-          through: { attributes: [] },
-        },
-      ],
+      include: [{ model: task_model, as: "task" }],
     });
 
     if (!userId) {
@@ -138,6 +121,11 @@ export const deleteUser = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
+    //elimino logicamente las tareas del usuario (asi puedo obtener cuando se borro)
+    await task_model.destroy({
+      where: { user_id: id },
+    });
+    //luego de eliminar las tareas, elimino al usuario
     await user.destroy();
     res.status(200).json({ message: "Usuario eliminado correctamente" });
   } catch (error) {
