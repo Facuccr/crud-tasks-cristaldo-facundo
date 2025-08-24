@@ -57,7 +57,7 @@ export const createTask = async (req, res) => {
     res.status(201).json(newTask);
   } catch (error) {
     res.status(500).json({
-      message: "error al crear la tarea",
+      message: "error al crear la tareaa",
       error: error.message,
     });
   }
