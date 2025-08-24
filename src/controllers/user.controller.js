@@ -121,7 +121,7 @@ export const deleteUser = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
-    //elimino logicamente las tareas del usuario (asi puedo obtener cuando se borro)
+    //elimino logicamente las tareas del usuario
     await task_model.destroy({
       where: { user_id: id },
     });
