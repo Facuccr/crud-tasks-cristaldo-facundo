@@ -7,12 +7,25 @@ import {
   deleteTask,
 } from "../controllers/task.controller.js";
 
+import {
+  createTaskValidations,
+  updateTaskValidations,
+  taskIdParamValidation,
+} from "../middlewares/validations/tasks.validations.js";
+import { applyValidations } from "../middlewares/validations.js";
+
 const taskRouter = Router();
 
 taskRouter.get("/", getAllTasks);
-taskRouter.get("/:id", getTaskById);
-taskRouter.post("/:userId", createTask);
-taskRouter.put("/:id", updateTask);
-taskRouter.delete("/:id", deleteTask);
+taskRouter.get("/:id", taskIdParamValidation, applyValidations, getTaskById);
+taskRouter.post("/", createTaskValidations, applyValidations, createTask);
+taskRouter.put(
+  "/:id",
+  updateTaskValidations,
+  applyValidations,
+  taskIdParamValidation,
+  updateTask
+);
+taskRouter.delete("/:id", taskIdParamValidation, applyValidations, deleteTask);
 
 export default taskRouter;
