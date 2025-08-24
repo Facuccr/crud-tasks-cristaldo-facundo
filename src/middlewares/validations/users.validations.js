@@ -44,7 +44,9 @@ export const updateUserValidations = [
   body("name")
     .optional()
     .isString()
-    .withMessage("la contraseña debe ser texto"),
+    .withMessage("la contraseña debe ser texto")
+    .isLength({ min: 3 })
+    .withMessage("el name debe tener al menos 3 caracteres"),
 
   body("email")
     .optional()
