@@ -23,7 +23,7 @@ export const getRoleById = async (req, res) => {
 export const createRole = async (req, res) => {
   try {
     const data = matchedData(req);
-    const role = await role_model.create({ name: data.name });
+    const role = await role_model.create(data);
     res.status(201).json(role);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -35,7 +35,7 @@ export const updateRole = async (req, res) => {
     const { id } = req.params;
     const data = matchedData(req);
     const role = await role_model.findByPk(id);
-    await role.update({ name: data.name });
+    await role.update(data);
     res.status(200).json(role);
   } catch (error) {
     res.status(500).json({ message: error.message });
