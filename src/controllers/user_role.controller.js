@@ -1,40 +1,19 @@
+import { matchedData } from "express-validator";
 import { role_model } from "../models/role.model.js";
 import { user_model } from "../models/user.model.js";
 import { UserRole } from "../models/user_role.model.js";
 
 export const createUserRole = async (req, res) => {
   try {
-    const { user_id, role_id } = req.body;
-    //verificar que el rol realmente exista en la bd
-    const verificarRole = await role_model.findOne({ where: { id: role_id } });
-    if (!verificarRole) {
-      return res.status(400).json({ message: "el rol no existe" });
-    }
+    const data = matchedData(req);
 
-    //verificar que el usuario exista
-    const verificarUsuario = await user_model.findOne({
-      where: { id: user_id },
-    });
-    if (!verificarUsuario) {
-      return res
-        .status(400)
-        .json({ message: "no se encontro el usuario con el id proporsionado" });
-    }
-    //verificar que el usuario no tenga ese rol asignado previamente
-    const existeRelacion = await UserRole.findOne({
-      where: { user_id: user_id, role_id: role_id },
-    });
-    if (existeRelacion) {
-      return res.status(400).json({
-        message: "ese rol ya fue asignado a este usuario",
-      });
-    }
     const relation = await UserRole.create({
-      user_id: user_id,
-      role_id: role_id,
+      user_id: data.user_id,
+      role_id: data.role_id,
     });
-    res.json(relation);
+    res.json({ msg: "relacion creada", relation });
   } catch (error) {
+    console.log(error);
     res
       .status(500)
       .json({ message: "error al asignar el rol", error: error.message });
@@ -63,11 +42,7 @@ export const getUserRoleById = async (req, res) => {
         },
       ],
     });
-    if (!relation) {
-      return res
-        .status(404)
-        .json({ message: "Relacion usuario-rol no encontrada" });
-    }
+    res.status(200).json({ relation });
   } catch (error) {
     res.status(500).json({
       message: "Error al obtener la relacion usuario-rol",
@@ -132,12 +107,6 @@ export const deleteUserRole = async (req, res) => {
   try {
     const { id } = req.params;
     const relation = await UserRole.findOne({ where: { id } });
-
-    if (!relation) {
-      return res
-        .status(404)
-        .json({ message: "realcion usuario.rol no encontrada" });
-    }
 
     await relation.destroy();
 
