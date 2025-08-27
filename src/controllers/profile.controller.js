@@ -40,9 +40,7 @@ export const getProfileById = async (req, res) => {
 export const createProfile = async (req, res) => {
   try {
     const data = matchedData(req);
-    const profile = await UserProfileModel.create({
-      data,
-    });
+    const profile = await UserProfileModel.create(data);
     res.status(201).json(profile);
   } catch (error) {
     res.status(500).json({ message: error.message });
