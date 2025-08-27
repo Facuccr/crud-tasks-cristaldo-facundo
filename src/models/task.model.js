@@ -9,12 +9,20 @@ export const task_model = sequelize.define(
     isComplete: { type: DataTypes.BOOLEAN, defaultValue: false },
   },
   {
-    timestamps: false,
+    timestamps: true,
+    paranoid: true,
   }
 );
 
 //una tarea pertenece a un unico usuario
-task_model.belongsTo(user_model, { foreignKey: "user_id", as: "responsible" });
+task_model.belongsTo(user_model, {
+  foreignKey: "user_id",
+  as: "responsible",
+});
 
 // un usuario tiene muchas tareas
-user_model.hasMany(task_model, { foreignKey: "user_id", as: "task" });
+user_model.hasMany(task_model, {
+  foreignKey: "user_id",
+  as: "task",
+  onDelete: "CASCADE",
+});

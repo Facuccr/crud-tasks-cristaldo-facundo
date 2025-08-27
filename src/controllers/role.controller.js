@@ -1,29 +1,53 @@
+import { matchedData } from "express-validator";
 import { role_model } from "../models/role.model.js";
-import { user_model } from "../models/user.model.js";
+
+export const getAllRoles = async (req, res) => {
+  try {
+    const roles = await role_model.findAll();
+    res.status(200).json(roles);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const getRoleById = async (req, res) => {
+  try {
+    const { id } = matchedData(req);
+    const role = await role_model.findByPk(id);
+    res.status(200).json(role);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
 export const createRole = async (req, res) => {
   try {
-    const { name } = req.body;
-    const role = await role_model.create({ name });
+    const data = matchedData(req);
+    const role = await role_model.create(data);
     res.status(201).json(role);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-export const getAllRoles = async (req, res) => {
+export const updateRole = async (req, res) => {
   try {
-    const roles = await role_model.findAll({
-      include: [
-        {
-          model: user_model,
-          as: "users",
-          attributes: ["id", "name", "email"],
-          through: { attributes: [] },
-        },
-      ],
-    });
-    res.json(roles);
+    const { id } = req.params;
+    const data = matchedData(req);
+    const role = await role_model.findByPk(id);
+    await role.update(data);
+    res.status(200).json(role);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const deleteRole = async (req, res) => {
+  try {
+    const { id } = matchedData(req);
+    const role = await role_model.findByPk(id);
+    await role.destroy();
+    res.status(200).json({ message: "rol eliminado correctamente" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

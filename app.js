@@ -17,7 +17,7 @@ app.use("/api/users", userRouter);
 app.use("/api/tasks", taskRouter);
 app.use("/api/profiles", profileRouter);
 app.use("/api/roles", roleRouter);
-app.use("/api/assing", user_roleRouter);
+app.use("/api/users_roles", user_roleRouter);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Ruta no encontrada" });
