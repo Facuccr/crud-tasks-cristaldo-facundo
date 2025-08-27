@@ -88,10 +88,6 @@ export const updateUserRole = async (req, res) => {
       return res.status(201).json({
         message: "actualizado correcteamnte",
       });
-    } else {
-      return res.status(400).json({
-        message: "el id proporcionado no existe en la base de datos",
-      });
     }
   } catch (err) {
     return res.status(500).json({
