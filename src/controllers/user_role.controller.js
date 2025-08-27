@@ -7,10 +7,8 @@ export const createUserRole = async (req, res) => {
   try {
     const data = matchedData(req);
 
-    const relation = await UserRole.create({
-      user_id: data.user_id,
-      role_id: data.role_id,
-    });
+    console.log(data);
+    const relation = await UserRole.create(data);
     res.json({ msg: "relacion creada", relation });
   } catch (error) {
     console.log(error);
