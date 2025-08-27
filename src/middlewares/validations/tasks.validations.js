@@ -3,6 +3,15 @@ import { task_model } from "../../models/task.model.js";
 import { user_model } from "../../models/user.model.js";
 
 export const createTaskValidations = [
+  body("user_id")
+    .isInt()
+    .withMessage("user_id debe ser un numero entero")
+    .custom(async (user_id) => {
+      const user = await user_model.findByPk(user_id);
+      if (!user) throw new Error("el usuario no existe");
+
+      return true;
+    }),
   body("title")
     .notEmpty()
     .withMessage("el titulo es obligatorio")
@@ -23,17 +32,6 @@ export const createTaskValidations = [
     .withMessage("la descripcion no debe tener mas de 100 caracteres"),
 
   body("isComplete").isBoolean().withMessage("isComplete debe ser booleano"),
-
-  body("userId")
-    .isInt()
-    .withMessage("userId debe ser un número entero")
-    .custom(async (userId) => {
-      const user = await user_model.findByPk(userId);
-      if (!user) {
-        throw new Error("el usuario no existe");
-      }
-      return true;
-    }),
 ];
 
 export const updateTaskValidations = [

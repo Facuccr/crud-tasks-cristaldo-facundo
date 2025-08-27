@@ -48,12 +48,9 @@ export const getTaskById = async (req, res) => {
 export const createTask = async (req, res) => {
   try {
     const data = matchedData(req);
-    const newTask = await task_model.create({
-      title: data.title,
-      description: data.description,
-      isComplete: data.isComplete,
-      user_id: data.userId,
-    });
+    console.log(data);
+    const newTask = await task_model.create(data);
+
     res.status(201).json(newTask);
   } catch (error) {
     res.status(500).json({
