@@ -1,12 +1,13 @@
 import { matchedData } from "express-validator";
 import { UserProfileModel } from "../models/user.profile.model.js";
+import { user_model } from "../models/user.model.js";
 
 export const getAllProfiles = async (req, res) => {
   try {
     const profiles = await UserProfileModel.findAll({
       include: [
         {
-          model: UserProfileModel.sequelize.models.user_model,
+          model: user_model,
           as: "user",
           attributes: ["id", "name", "email"],
         },
@@ -24,7 +25,7 @@ export const getProfileById = async (req, res) => {
     const profile = await UserProfileModel.findByPk(id, {
       include: [
         {
-          model: UserProfileModel.sequelize.models.user_model,
+          model: user_model,
           as: "user",
           attributes: ["id", "name", "email"],
         },
@@ -40,9 +41,7 @@ export const createProfile = async (req, res) => {
   try {
     const data = matchedData(req);
     const profile = await UserProfileModel.create({
-      user_id: data.user_id,
-      phone: data.phone,
-      address: data.address,
+      data,
     });
     res.status(201).json(profile);
   } catch (error) {
